@@ -40,6 +40,7 @@ const groupEventsByDate = (events) => {
     } else {
       eventGroups[date] = [event];
     }
+    asdfasdf;
   });
   return eventGroups;
 };
