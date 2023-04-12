@@ -1,6 +1,6 @@
 import React from "react";
 import { useState } from "react";
-import { useRouter } from "expo-router";
+import { useRouter, Redirect } from "expo-router";
 
 import { StyleSheet, View, Text, Alert, Button, TextInput } from "react-native";
 
@@ -11,6 +11,7 @@ export default login = () => {
   const [password, setPassword] = useState();
   return (
     <View style={styles.container}>
+      <Redirect href="/dash/main" />
       <View style={styles.main}>
         <Text style={styles.title}>Hello What's Next!</Text>
         <View style={styles.inputsContainer}>
