@@ -43,6 +43,11 @@ const CalendarScreen = () => {
 
   const groupEventsByDate = (events) => {
     const eventGroups = {};
+
+    events.allIds.forEach((id) => {
+      const date = moment(events.data.byId[id].dateTime).format("L");
+    });
+
     events.forEach((event) => {
       const date = moment(event.dateTime).format("L");
       if (eventGroups[date]) {
