@@ -2,22 +2,45 @@ import { StyleSheet, View, Text, TextInput, Button } from "react-native";
 import React from "react";
 import { useState } from "react";
 
+import { useDispatch } from "react-redux";
+import { addEvent } from "../../redux/features/eventsSlice";
+
+import * as Crypto from "expo-crypto";
+
 import DateTimePicker from "@react-native-community/datetimepicker";
 
 const newEvent = () => {
   const [date, setDate] = useState(new Date());
   const onDateTimePickerChange = (event, selected) => {
+    console.log(selected);
     setDate(selected);
   };
 
-  const [title, setTitle] = useState();
+  const [title, setTitle] = useState("");
   const onTitleChange = (input) => {
     setTitle(input);
   };
 
-  const [description, setDescription] = useState();
+  const [description, setDescription] = useState("");
   const onDescriptionChange = (input) => {
     setDescription(input);
+  };
+
+  const [id, setId] = useState(Crypto.randomUUID);
+
+  const dispatch = useDispatch();
+
+  const onSubmit = () => {
+    dispatch(addEvent(object));
+  };
+
+  const object = {
+    ID: id,
+    UID: 123456789,
+    user: "USER 101",
+    title: title,
+    description: description,
+    dateTime: date.toISOString(),
   };
 
   return (
@@ -44,15 +67,13 @@ const newEvent = () => {
         placeholderTextColor="#8f8f8f"
         autoCorrect={false}
         autoCapitalize="none"
-        onTitleChange={onDescriptionChange}
+        onChangeText={onDescriptionChange}
         value={description}
       />
       <Button
         title="Press me"
         color="#007aff"
-        onPress={() => {
-          console.log("Button pressed");
-        }}
+        onPress={onSubmit}
         style={styles.button}
       />
     </View>

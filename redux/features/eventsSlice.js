@@ -1,8 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
+  user: 101,
   data: {
     //rename it as events
+    allIds: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19],
     byId: {
       1: {
         ID: 1,
@@ -175,7 +177,7 @@ const initialState = {
         dateTime: "2023-04-29T12:00:00.000Z",
       },
     },
-    allIds: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19], //if I would like to change the order
+    //if I would like to change the order
   },
   status: "idle",
 };
@@ -183,7 +185,18 @@ export const eventsSlice = createSlice({
   name: "events",
   initialState,
   reducers: {
-    addEvent: (state, action) => {},
+    addEvent: (state, action) => {
+      console.log("addEvent Ran");
+
+      const addedEventId = action.payload.ID;
+      const addedEventData = action.payload;
+
+      state.data.allIds.push(addedEventId);
+      state.data.byId = {
+        ...state.data.byId,
+        ...{ [addedEventId]: addedEventData },
+      };
+    },
     removeEvent: (state, action) => {},
   },
 });

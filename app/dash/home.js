@@ -1,6 +1,6 @@
 import React from "react";
 import { View, Text, StyleSheet, Pressable, ScrollView } from "react-native";
-import { useRouter } from "expo-router";
+import { useRouter, Redirect } from "expo-router";
 import { useSelector } from "react-redux";
 import { eventsData } from "../../redux/features/eventsSlice";
 
@@ -8,7 +8,6 @@ import moment from "moment";
 
 const CalendarScreen = () => {
   const router = useRouter();
-  router.push("./newEvent");
   const events = useSelector(eventsData);
   // console.log(useSelector(eventsData));
 
@@ -67,14 +66,18 @@ const CalendarScreen = () => {
 
   return (
     <>
-      <View style={styles.container}>
-        <ScrollView style={styles.scrollView}>
-          {eventGroups.map(renderEventGroup)}
-        </ScrollView>
-      </View>
+      {false ? (
+        <Redirect href="./newEvent" />
+      ) : (
+        <View style={styles.container}>
+          <ScrollView style={styles.scrollView}>
+            {eventGroups.map(renderEventGroup)}
+          </ScrollView>
+        </View>
+      )}
     </>
   );
-};
+}; //If added date does not already exist, the new added event from newEvent will not show on screen -----------
 
 export default CalendarScreen;
 
