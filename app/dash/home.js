@@ -40,12 +40,13 @@ const CalendarScreen = () => {
 
   const renderEvent = (event) => {
     // console.log(event);
+
     return (
       <Pressable
         style={styles.eventContainer}
-        key={event.ID}
+        key={event.id}
         onPress={() => {
-          onEventPress(event.ID);
+          onEventPress(event.id);
         }}
       >
         <Text style={[styles.eventText, styles.eventTitle]}>
@@ -79,13 +80,10 @@ const CalendarScreen = () => {
   );
 }; //If added date does not already exist, the new added event from newEvent will not show on screen -----------
 
-export default CalendarScreen;
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: 25,
-    maxHeight: 750,
+    maxHeight: 800,
     paddingHorizontal: 20,
   },
   scrollView: {
@@ -121,3 +119,5 @@ const styles = StyleSheet.create({
     height: 50,
   },
 });
+
+export default CalendarScreen;
