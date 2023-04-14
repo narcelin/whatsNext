@@ -188,16 +188,22 @@ export const eventsSlice = createSlice({
     addEvent: (state, action) => {
       console.log("addEvent Ran");
 
-      const addedEventId = action.payload.ID;
-      const addedEventData = action.payload;
+      const newEventId = action.payload.id;
+      const newEventData = action.payload;
 
-      state.data.allIds.push(addedEventId);
+      state.data.allIds.push(newEventId);
       state.data.byId = {
         ...state.data.byId,
-        ...{ [addedEventId]: addedEventData },
+        ...{ [newEventId]: newEventData },
       };
     },
-    removeEvent: (state, action) => {},
+    removeEvent: (state, action) => {
+      const _ = require("lodash");
+      const eventId = action.payload.id;
+
+      state.data.allIds = _.omit(state.data.allIds, [eventId]);
+      state.data.byId = _.omit(state.data.byId, [eventId]);
+    },
   },
 });
 

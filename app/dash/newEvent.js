@@ -35,8 +35,8 @@ const newEvent = () => {
   };
 
   const object = {
-    ID: id,
-    UID: 123456789,
+    id: id,
+    uid: 123456789,
     user: "USER 101",
     title: title,
     description: description,
