@@ -1,6 +1,8 @@
 import React from "react";
 import { View, Text, StyleSheet, Pressable } from "react-native";
 import { useRouter } from "expo-router";
+import { useSelector } from "react-redux";
+import { eventsData } from "../../redux/features/eventsSlice";
 
 import moment from "moment";
 
@@ -40,14 +42,11 @@ const events = [
 
 const CalendarScreen = () => {
   const router = useRouter();
+  const events2 = useSelector(eventsData);
+  // console.log(useSelector(eventsData));
 
   const groupEventsByDate = (events) => {
     const eventGroups = {};
-
-    events.allIds.forEach((id) => {
-      const date = moment(events.data.byId[id].dateTime).format("L");
-    });
-
     events.forEach((event) => {
       const date = moment(event.dateTime).format("L");
       if (eventGroups[date]) {
@@ -58,23 +57,42 @@ const CalendarScreen = () => {
     });
     return eventGroups;
   };
-
-  const onEventPress = (event) => {
-    //Eventuall will use redux instead of prop drilling
-    console.log(`Pressed ${event}`);
-    router.push({
-      pathname: "./eventScreen",
-      params: { event },
+  const groupEventsByDate2 = (events2) => {
+    //checks out
+    const eventGroups = {};
+    events2.allIds.forEach((id) => {
+      const date = moment(events2.byId[id].dateTime).format("L");
+      if (eventGroups[date]) {
+        eventGroups[date].push(events2.byId[id]);
+      } else {
+        eventGroups[date] = [events2.byId[id]];
+      }
     });
+    return eventGroups;
+  };
+
+  const eventGroups = Object.entries(groupEventsByDate(events));
+  const eventGroups2 = Object.entries(groupEventsByDate2(events2)); //checks out
+
+  const renderEventGroup = ([date, events]) => {
+    // console.log(date);
+    // console.log(events);
+    return (
+      <View style={styles.dateContainer} key={date}>
+        <Text style={styles.dateHeader}>{date}</Text>
+        {events.map(renderEvent)}
+      </View>
+    );
   };
 
   const renderEvent = (event) => {
+    // console.log(event);
     return (
       <Pressable
         style={styles.eventContainer}
-        key={event.title}
+        key={event.ID}
         onPress={() => {
-          onEventPress(event);
+          onEventPress(event.ID);
         }}
       >
         <Text style={[styles.eventText, styles.eventTitle]}>
@@ -86,19 +104,15 @@ const CalendarScreen = () => {
     );
   };
 
-  const renderEventGroup = ([date, events]) => {
-    return (
-      <View style={styles.dateContainer} key={date}>
-        <Text style={styles.dateHeader}>{date}</Text>
-        {events.map(renderEvent)}
-      </View>
-    );
+  const onEventPress = (eventID) => {
+    router.push({
+      pathname: "./eventScreen",
+      params: { eventID },
+    });
   };
 
-  const eventGroups = Object.entries(groupEventsByDate(events));
-
   return (
-    <View style={styles.container}>{eventGroups.map(renderEventGroup)}</View>
+    <View style={styles.container}>{eventGroups2.map(renderEventGroup)}</View>
   );
 };
 

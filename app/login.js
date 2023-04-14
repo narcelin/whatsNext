@@ -11,7 +11,7 @@ export default login = () => {
   const [password, setPassword] = useState();
   return (
     <View style={styles.container}>
-      <Redirect href="/dash/main" />
+      <Redirect href="/dash/home" />
       <View style={styles.main}>
         <Text style={styles.title}>Hello What's Next!</Text>
         <View style={styles.inputsContainer}>
@@ -32,7 +32,7 @@ export default login = () => {
           <Button
             style={styles.button}
             title="Login"
-            onPress={() => router.push("/dash/main")}
+            onPress={() => router.push("/dash/home")}
           />
           <Button
             style={styles.button}

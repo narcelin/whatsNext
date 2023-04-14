@@ -1,36 +1,31 @@
 import React from "react";
-import { View, Text } from "react-native";
-import { Tabs, useRouter } from "expo-router";
+import { View, Text, Alert } from "react-native";
+import { Tabs, useRouter, Stack } from "expo-router";
 
 import { AntDesign } from "@expo/vector-icons";
 
 export default function Layout() {
   const router = useRouter();
   return (
-    <Tabs
+    <Stack
       screenOptions={{
         headerStyle: { backgroundColor: "#1E2632" },
         headerTintColor: "#FFE030",
         headerRight: () => (
           <Text
-            onPress={() => router.push("dash/modal")}
+            onPress={() => Alert.alert("Look behing you")}
             style={{ color: "white" }}
           >
-            Modal
+            Info
           </Text>
         ),
       }}
     >
-      <Tabs.Screen name="modal" options={{ title: "TEST SCREEN" }} />
-      <Tabs.Screen
-        name="main"
-        options={{
-          title: "Welcome Home",
-          tabBarIcon: ({ color }) => (
-            <AntDesign name="home" size={24} color={color} />
-          ),
-        }}
+      <Stack.Screen name="home" options={{ title: "TEST SCREEN" }} />
+      <Stack.Screen
+        name="eventScreen"
+        options={{ title: "EVENT", presentation: "modal" }}
       />
-    </Tabs>
+    </Stack>
   );
 }

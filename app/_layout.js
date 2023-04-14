@@ -4,7 +4,7 @@ import { StatusBar } from "expo-status-bar";
 export default function Layout() {
   return (
     <>
-      <StatusBar style="inverted" />
+      <StatusBar style="light" />
       <Slot />
     </>
   );

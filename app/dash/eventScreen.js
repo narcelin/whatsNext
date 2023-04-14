@@ -2,39 +2,30 @@ import { View, Text } from "react-native";
 import React from "react";
 
 import { useSelector } from "react-redux";
-import { returnAllEvents } from "./../../redux/features/eventsSlice";
+import { eventsData } from "./../../redux/features/eventsSlice";
+import { useSearchParams } from "expo-router";
 
-const test = {
-  value: {
-    //rename it as events
-    byId: {
-      1: {
-        eventID: 1,
-        title: "First Sample Event",
-        description: "Sample description",
-        dateTime: "",
-      },
-      2: {
-        eventID: 2,
-        title: "First Sample Event",
-        description: "Sample description",
-        dateTime: "",
-      },
-      allEventIds: [1, 2],
-    },
-  },
-};
+import moment from "moment";
 
-const getEventById = (eventID) => {
-  return test.value.byId[eventID];
-};
+const eventScreen = () => {
+  const { eventID } = useSearchParams();
+  const events = useSelector(eventsData);
 
-export default function eventScreen(event) {
-  // const res = useSelector(re)
-  console.log(useSelector(returnAllEvents).events);
+  const event = events.byId[eventID];
+  console.log(event);
+  console.log(moment(event?.dateTime).format("ddd MMM D h:mm"));
+
   return (
     <View>
-      <Text>eventScreen</Text>
+      {event ? (
+        <>
+          <Text>{moment(event?.dateTime).format("ddd MMM D h:mm")}</Text>
+          <Text>{event.user}</Text>
+          <Text>{event.title}</Text>
+          <Text>{event.description}</Text>
+        </>
+      ) : null}
     </View>
   );
-}
+};
+export default eventScreen;
