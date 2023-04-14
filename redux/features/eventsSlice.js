@@ -185,6 +185,17 @@ export const eventsSlice = createSlice({
   name: "events",
   initialState,
   reducers: {
+    createUser: (state, action) => {
+      // action.payload
+      // uid
+      // username
+    },
+    loginUser: (state, action) => {
+      state.user = action.payload.user;
+    },
+    logoutUser: (state, action) => {
+      state.user;
+    },
     addEvent: (state, action) => {
       console.log("addEvent Ran");
 

@@ -1,4 +1,4 @@
-import { StyleSheet, View, Text, TextInput, Button } from "react-native";
+import { StyleSheet, View, Text, TextInput, Button, Alert } from "react-native";
 import React from "react";
 import { useState } from "react";
 
@@ -31,7 +31,11 @@ const newEvent = () => {
   const dispatch = useDispatch();
 
   const onSubmit = () => {
-    dispatch(addEvent(object));
+    if (title && description) {
+      dispatch(addEvent(object));
+    } else {
+      Alert.alert("Missing Info");
+    }
   };
 
   const object = {
