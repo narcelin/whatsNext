@@ -8,6 +8,7 @@ import moment from "moment";
 
 const CalendarScreen = () => {
   const router = useRouter();
+  router.push("./newEvent");
   const events = useSelector(eventsData);
   // console.log(useSelector(eventsData));
 
@@ -65,11 +66,13 @@ const CalendarScreen = () => {
   };
 
   return (
-    <View style={styles.container}>
-      <ScrollView style={styles.scrollView}>
-        {eventGroups.map(renderEventGroup)}
-      </ScrollView>
-    </View>
+    <>
+      <View style={styles.container}>
+        <ScrollView style={styles.scrollView}>
+          {eventGroups.map(renderEventGroup)}
+        </ScrollView>
+      </View>
+    </>
   );
 };
 
@@ -107,5 +110,11 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     marginVertical: 5,
+  },
+  bottomBar: {
+    borderWidth: 1,
+    borderColor: "black",
+    paddingVertical: 5,
+    height: 50,
   },
 });

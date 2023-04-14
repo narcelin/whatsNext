@@ -10,10 +10,7 @@ import moment from "moment";
 const eventScreen = () => {
   const { eventID } = useSearchParams();
   const events = useSelector(eventsData);
-
   const event = events.byId[eventID];
-  console.log(event);
-  console.log(moment(event?.dateTime).format("ddd MMM D h:mm"));
 
   return (
     <View>
