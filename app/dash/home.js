@@ -1,78 +1,31 @@
 import React from "react";
-import { View, Text, StyleSheet, Pressable } from "react-native";
+import { View, Text, StyleSheet, Pressable, ScrollView } from "react-native";
 import { useRouter } from "expo-router";
 import { useSelector } from "react-redux";
 import { eventsData } from "../../redux/features/eventsSlice";
 
 import moment from "moment";
 
-const events = [
-  //REDUX NEEDED
-  {
-    EID: 1,
-    title: "Meeting with John",
-    dateTime: "2023-04-13T10:00:00.000Z",
-    user: "Alice",
-  },
-  {
-    EID: 2,
-    title: "Lunch with Jane",
-    dateTime: "2023-04-14T12:30:00.000Z",
-    user: "Bob",
-  },
-  {
-    EID: 3,
-    title: "Conference call",
-    dateTime: "2023-04-15T15:00:00.000Z",
-    user: "Charlie",
-  },
-  {
-    EID: 4,
-    title: "Project review",
-    dateTime: "2023-04-17T09:00:00.000Z",
-    user: "Dave",
-  },
-  {
-    EID: 5,
-    title: "Team meeting",
-    dateTime: "2023-04-17T11:00:00.000Z",
-    user: "Eve",
-  },
-];
-
 const CalendarScreen = () => {
   const router = useRouter();
-  const events2 = useSelector(eventsData);
+  const events = useSelector(eventsData);
   // console.log(useSelector(eventsData));
 
   const groupEventsByDate = (events) => {
-    const eventGroups = {};
-    events.forEach((event) => {
-      const date = moment(event.dateTime).format("L");
-      if (eventGroups[date]) {
-        eventGroups[date].push(event);
-      } else {
-        eventGroups[date] = [event];
-      }
-    });
-    return eventGroups;
-  };
-  const groupEventsByDate2 = (events2) => {
     //checks out
     const eventGroups = {};
-    events2.allIds.forEach((id) => {
-      const date = moment(events2.byId[id].dateTime).format("L");
+    events.allIds.forEach((id) => {
+      const date = moment(events.byId[id].dateTime).format("L");
       if (eventGroups[date]) {
-        eventGroups[date].push(events2.byId[id]);
+        eventGroups[date].push(events.byId[id]);
       } else {
-        eventGroups[date] = [events2.byId[id]];
+        eventGroups[date] = [events.byId[id]];
       }
     });
     return eventGroups;
   };
 
-  const eventGroups = Object.entries(groupEventsByDate(events));
-  const eventGroups2 = Object.entries(groupEventsByDate2(events2)); //checks out
+  const eventGroups = Object.entries(groupEventsByDate(events)); //checks out
 
   const renderEventGroup = ([date, events]) => {
     // console.log(date);
@@ -112,7 +65,11 @@ const CalendarScreen = () => {
   };
 
   return (
-    <View style={styles.container}>{eventGroups2.map(renderEventGroup)}</View>
+    <View style={styles.container}>
+      <ScrollView style={styles.scrollView}>
+        {eventGroups.map(renderEventGroup)}
+      </ScrollView>
+    </View>
   );
 };
 
@@ -121,8 +78,12 @@ export default CalendarScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: 50,
+    paddingTop: 25,
+    maxHeight: 750,
     paddingHorizontal: 20,
+  },
+  scrollView: {
+    flexGrow: 1,
   },
   dateContainer: {
     borderBottomWidth: 1,
