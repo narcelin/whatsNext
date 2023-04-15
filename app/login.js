@@ -11,36 +11,44 @@ export default login = () => {
   const [password, setPassword] = useState();
   return (
     <View style={styles.container}>
-      <Redirect href="/dash/home" />
-      <View style={styles.main}>
-        <Text style={styles.title}>Hello What's Next!</Text>
-        <View style={styles.inputsContainer}>
-          <TextInput
-            style={styles.textInput}
-            placeholder="Username"
-            placeholderTextColor={"black"}
-            value={username}
-            onChangeText={setUsername}
-          />
-          <TextInput
-            style={styles.textInput}
-            placeholder="Password"
-            placeholderTextColor={"black"}
-            value={password}
-            onChangeText={setPassword}
-          />
-          <Button
-            style={styles.button}
-            title="Login"
-            onPress={() => router.push("/dash/home")}
-          />
-          <Button
-            style={styles.button}
-            title="Forgot Password?"
-            onPress={() => Alert.alert("PRESSED BUTTON")}
-          />
+      {false ? (
+        <Redirect href="/dash/home" />
+      ) : (
+        <View style={styles.main}>
+          <Text style={styles.title}>Hello What's Next!</Text>
+          <View style={styles.inputsContainer}>
+            <TextInput
+              style={styles.textInput}
+              placeholder="Username"
+              placeholderTextColor={"black"}
+              value={username}
+              onChangeText={setUsername}
+            />
+            <TextInput
+              style={styles.textInput}
+              placeholder="Password"
+              placeholderTextColor={"black"}
+              value={password}
+              onChangeText={setPassword}
+            />
+            <Button
+              style={styles.button}
+              title="Login"
+              onPress={() => router.push("/dash/home")}
+            />
+            <Button
+              style={styles.button}
+              title="Forgot Password"
+              onPress={() => Alert.alert("Well you're fucked")}
+            />
+            <Button
+              style={styles.button}
+              title="Create New Uer"
+              onPress={() => router.push("./newUser")}
+            />
+          </View>
         </View>
-      </View>
+      )}
     </View>
   );
 };

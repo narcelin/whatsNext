@@ -1,8 +1,6 @@
 import React from "react";
 import { View, Text, Alert } from "react-native";
-import { Tabs, useRouter, Stack } from "expo-router";
-
-import { AntDesign } from "@expo/vector-icons";
+import { useRouter, Stack } from "expo-router";
 
 export default function Layout() {
   const router = useRouter();

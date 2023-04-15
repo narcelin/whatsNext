@@ -2,7 +2,7 @@ import React from "react";
 import { useState } from "react";
 
 import { useDispatch } from "react-redux";
-import { createUser } from "../../redux/features/eventsSlice";
+import { createUser } from "./../redux/features/eventsSlice";
 
 import { View, Text, StyleSheet, Button, TextInput } from "react-native";
 
