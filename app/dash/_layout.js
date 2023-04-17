@@ -23,6 +23,16 @@ export default function Layout() {
               Add New Event
             </Text>
           ),
+          headerLeft: () => (
+            <Text
+              onPress={() => {
+                router.push("/login");
+              }}
+              style={{ color: "white" }}
+            >
+              Logout
+            </Text>
+          ),
         }}
       />
       <Stack.Screen

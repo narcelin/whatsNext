@@ -1,7 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  user: 101,
   data: {
     //rename it as events
     allIds: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19],
@@ -185,17 +184,6 @@ export const eventsSlice = createSlice({
   name: "events",
   initialState,
   reducers: {
-    createUser: (state, action) => {
-      // action.payload
-      // uid
-      // username
-    },
-    loginUser: (state, action) => {
-      state.user = action.payload.user;
-    },
-    logoutUser: (state, action) => {
-      state.user;
-    },
     addEvent: (state, action) => {
       console.log("addEvent Ran");
 

@@ -12,7 +12,7 @@ export default login = () => {
   return (
     <View style={styles.container}>
       {false ? (
-        <Redirect href="/dash/home" />
+        <Redirect href="/newUser" />
       ) : (
         <View style={styles.main}>
           <Text style={styles.title}>Hello What's Next!</Text>
