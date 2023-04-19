@@ -1,3 +1,7 @@
+# Before Running
+
+import store through the provider to "/Users/nico/workspace/expoProjects/whatsNext/node_modules/expo-router/entry.js"
+
 # Expo Router Example
 
 Use [`expo-router`](https://expo.github.io/router) to build native navigation using files in the `app/` directory.

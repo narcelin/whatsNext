@@ -42,6 +42,7 @@
     "metro-resolver": "^0.73.7"
   },
   "name": "whatsnext",
+  "proxy": "http://localhost:5000",
   "version": "1.0.0",
   "private": true
 }
