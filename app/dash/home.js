@@ -5,9 +5,11 @@ import { useSelector } from "react-redux";
 import { eventsData } from "../../redux/features/eventsSlice";
 
 import moment from "moment";
+import { userData } from "../../redux/features/userSlice";
 
 const CalendarScreen = () => {
   const router = useRouter();
+  console.log(useSelector(userData), "USERRRR DATAAAA");
   const events = useSelector(eventsData);
   // console.log(useSelector(eventsData));
 
@@ -26,17 +28,7 @@ const CalendarScreen = () => {
   };
 
   const eventGroups = Object.entries(groupEventsByDate(events)); //checks out
-
-  const renderEventGroup = ([date, events]) => {
-    // console.log(date);
-    // console.log(events);
-    return (
-      <View style={styles.dateContainer} key={date}>
-        <Text style={styles.dateHeader}>{date}</Text>
-        {events.map(renderEvent)}
-      </View>
-    );
-  };
+  // console.log(eventGroups);
 
   const renderEvent = (event) => {
     // console.log(event);
@@ -55,6 +47,17 @@ const CalendarScreen = () => {
         <Text style={[styles.eventText, styles.eventTitle]}>{event.title}</Text>
         <Text style={[styles.eventText, styles.eventUser]}>{event.user}</Text>
       </Pressable>
+    );
+  };
+
+  const renderEventGroup = ([date, events]) => {
+    // console.log(date);
+    // console.log(events);
+    return (
+      <View style={styles.dateContainer} key={date}>
+        <Text style={styles.dateHeader}>{date}</Text>
+        {events.map(renderEvent)}
+      </View>
     );
   };
 

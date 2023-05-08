@@ -2,17 +2,39 @@ import React from "react";
 import { useState } from "react";
 import { useRouter, Redirect } from "expo-router";
 
+import { useDispatch } from "react-redux";
+import { saveUserData } from "../redux/features/userSlice";
+import { useLoginUserMutation } from "../redux/features/apiSlice";
+
+import * as Crypto from "expo-crypto";
+
 import { StyleSheet, View, Text, Alert, Button, TextInput } from "react-native";
 
 export default login = () => {
   const router = useRouter();
+  const dispatch = useDispatch();
 
-  const [username, setUsername] = useState();
-  const [password, setPassword] = useState();
+  const [username, setUsername] = useState("Admin");
+  const [password, setPassword] = useState("1234567");
+
+  const loginHandler = async () => {
+    const loggedinUser = await loginUser({ username, password });
+  };
+
+  const [loginUser, { data, error, isLoading }] = useLoginUserMutation();
+
+  if (isLoading) {
+    console.log("LOADINGGGGG");
+  } else if (data?.data) {
+    console.log(data.data);
+    dispatch(saveUserData(data.data));
+    router.push("./dash/home");
+  }
+
   return (
     <View style={styles.container}>
       {false ? (
-        <Redirect href="/newUser" />
+        <Redirect href="/dash/home" />
       ) : (
         <View style={styles.main}>
           <Text style={styles.title}>Hello What's Next!</Text>
@@ -34,7 +56,7 @@ export default login = () => {
             <Button
               style={styles.button}
               title="Login"
-              onPress={() => router.push("/dash/home")}
+              onPress={loginHandler}
             />
             <Button
               style={styles.button}
@@ -43,8 +65,19 @@ export default login = () => {
             />
             <Button
               style={styles.button}
-              title="Create New Uer"
+              title="Create New User"
               onPress={() => router.push("./newUser")}
+            />
+            <Button
+              style={styles.button}
+              title="TEST BUTTON"
+              onPress={async () => {
+                const digest = await Crypto.digestStringAsync(
+                  Crypto.CryptoDigestAlgorithm.SHA256,
+                  "GitHub stars are neat 🌟"
+                );
+                console.log("Digest: ", digest);
+              }}
             />
           </View>
         </View>

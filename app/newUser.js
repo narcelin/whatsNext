@@ -1,10 +1,12 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
+import { Platform } from "react-native";
 
 import * as Crypto from "expo-crypto";
 
 import { useDispatch, useSelector } from "react-redux";
-import { createUser } from "../redux/features/userSlice";
+import { saveUserData } from "../redux/features/userSlice";
+import { usePostUserMutation } from "./../redux/features/apiSlice";
 
 import { View, Text, StyleSheet, Button, TextInput, Alert } from "react-native";
 
@@ -12,33 +14,34 @@ import AppleLogin from "../components/signInOptions/AppleLogin";
 import GithubLogin from "../components/signInOptions/GithubLogin";
 import { useRouter } from "expo-router";
 
-// import * as Crypto from "expo-crypto";
-
 const newUser = () => {
   const dispatch = useDispatch();
   const router = useRouter();
 
-  const [uid, setUid] = useState(Crypto.randomUUID);
-  const [alias, setAlias] = useState("");
+  const [nickname, setNickname] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
-  const newUserObject = {
-    uid: uid,
+  const newUserData = {
     username: username,
-    alias: alias,
+    thirdPartyCredentials: {
+      apple_uid: null,
+      github_uid: null,
+    },
+    nickname: nickname,
     password: password,
-    accessToken: "",
+    accessToken: null,
+    eventIds: [],
   };
 
-  const actionPayload = newUserObject;
+  const [postUser, { data, error, isLoading }] = usePostUserMutation();
 
-  const onPressCreateUser = () => {
-    if (isPasswordValid() && password == confirmPassword) {
-      dispatch(createUser(newUserObject));
-      //This is where I send it to the database, also need to double check username
-      router.push("/dash/home");
+  const isPasswordValid = () => password.length >= 8;
+
+  const onPressCreateUser = async () => {
+    if (true || (isPasswordValid() && password == confirmPassword)) {
+      const loggedInUser = postUser(newUserData);
     } else {
       Alert.alert("Password");
       setPassword("");
@@ -46,12 +49,27 @@ const newUser = () => {
     }
   };
 
-  const isPasswordValid = () => password.length >= 8;
+  const test = (error) => {
+    console.log(error);
+  };
+
+  if (data?.data) {
+    console.log("ATLAS ---- User Created ----");
+    dispatch(saveUserData(data.data));
+    router.push("/dash/home");
+  }
+  useEffect(() => {
+    console.log("USE EFFECT");
+    if (!data?.data && error) {
+      console.log(error);
+      // test(error);
+    }
+  }, [error]);
 
   const doesUsernameExist = () => {
     // Check if username exists, style text box if true, avoid .length = 0
     username.length > 0 ? null : null;
-    console.log(username);
+    console.log("TEST");
   };
 
   return (
@@ -63,8 +81,8 @@ const newUser = () => {
         placeholderTextColor="#8f8f8f"
         autoCorrect={false}
         autoCapitalize="none"
-        onChangeText={setAlias}
-        value={alias}
+        onChangeText={setNickname}
+        value={nickname}
       />
       <TextInput
         style={styles.input}
@@ -102,7 +120,7 @@ const newUser = () => {
         onPress={onPressCreateUser}
         style={styles.button}
       />
-      <AppleLogin />
+      {Platform.OS === "ios" ? <AppleLogin /> : <Text>NOT AN IOS DEVICE</Text>}
       <GithubLogin />
     </View>
   );

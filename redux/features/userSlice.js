@@ -10,30 +10,31 @@ const initialState = {
   username: "username",
   alias: "alias",
   password: "password",
-  events: [],
+  eventsIds: [],
   status: "idle",
 };
+
 export const userSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
+    saveUserData: (state, action) => {
+      console.log("REDUX --- saveUserData ---");
+      console.log(action.payload, "ACTION PAYLOADS");
+      return { ...state, ...action.payload };
+    },
+    logoutUser: (state, action) => {},
+
     thirdPartyCredReducer: (state, action) => {
       state.thirdPartyCredentials = {
         ...state.thirdPartyCredentials,
         ...action.payload,
       };
     },
-    createUser: (state, action) => {
-      console.log("Redux --- createUser ---");
-      state = { ...state, ...action.payload };
-      return state;
-    },
-    loginUser: (state, action) => {},
-    logoutUser: (state, action) => {},
   },
 });
 
-export const { thirdPartyCredReducer, createUser, loginUser, logoutUser } =
+export const { thirdPartyCredReducer, saveUserData, logoutUser } =
   userSlice.actions;
 
 export const userData = (state) => {
