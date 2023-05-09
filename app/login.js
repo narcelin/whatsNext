@@ -26,7 +26,6 @@ export default login = () => {
   if (isLoading) {
     console.log("LOADINGGGGG");
   } else if (data?.data) {
-    console.log(data.data);
     dispatch(saveUserData(data.data));
     router.push("./dash/home");
   }

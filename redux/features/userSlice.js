@@ -20,7 +20,6 @@ export const userSlice = createSlice({
   reducers: {
     saveUserData: (state, action) => {
       console.log("REDUX --- saveUserData ---");
-      console.log(action.payload, "ACTION PAYLOADS");
       return { ...state, ...action.payload };
     },
     logoutUser: (state, action) => {},
@@ -39,6 +38,10 @@ export const { thirdPartyCredReducer, saveUserData, logoutUser } =
 
 export const userData = (state) => {
   return state.user;
+};
+
+export const usersEventsIds = (state) => {
+  return state.user.eventsIds;
 };
 
 export default userSlice.reducer;

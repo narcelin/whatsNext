@@ -1,17 +1,61 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { View, Text, StyleSheet, Pressable, ScrollView } from "react-native";
 import { useRouter, Redirect } from "expo-router";
 import { useSelector } from "react-redux";
 import { eventsData } from "../../redux/features/eventsSlice";
+import { usersEventsIds } from "../../redux/features/userSlice";
+import { userData } from "../../redux/features/userSlice";
+import { useGetAllEventsQuery } from "../../redux/features/apiSlice";
+import { useGetEventsMutation } from "../../redux/features/apiSlice";
 
 import moment from "moment";
-import { userData } from "../../redux/features/userSlice";
 
 const CalendarScreen = () => {
   const router = useRouter();
-  console.log(useSelector(userData), "USERRRR DATAAAA");
-  const events = useSelector(eventsData);
+  const eventsIds = useSelector(usersEventsIds);
+
+  const [getEvents, { data, error, isLoading }] = useGetEventsMutation();
+  useEffect(() => {
+    getEvents(eventsIds);
+  }, []);
+
+  console.log(data?.data, "----- Return Data from Events Ids");
   // console.log(useSelector(eventsData));
+
+  [
+    {
+      _id: "64407954e3deef7b1d1a137e",
+      dateTime: "2023-04-13T10:00:00.000Z",
+      description:
+        "Test your strength against one of nature's most fearsome predators! Disclaimer: we are not responsible for any injuries sustained during this event.",
+      id: 1,
+      title: "Wrestle a Bear",
+      uid: 1445,
+      user: "StateFarm Jake",
+    },
+    {
+      _id: "64407954e3deef7b1d1a137f",
+      dateTime: "2023-05-01T08:00:00.000Z",
+      description:
+        "Join me for a once-in-a-lifetime adventure as we hike the Grand Canyon from rim to rim!",
+      id: 2,
+      title: "Hiking the Grand Canyon",
+      uid: 2568,
+      user: "Jenny Smith",
+    },
+    {
+      _id: "64407954e3deef7b1d1a1380",
+      dateTime: "2023-06-15T18:30:00.000Z",
+      description:
+        "Learn the basics of yoga and improve your flexibility, strength, and overall well-being!",
+      id: 3,
+      title: "Intro to Yoga",
+      uid: 4823,
+      user: "John Doe",
+    },
+  ];
+
+  const events = useSelector(eventsData);
 
   const groupEventsByDate = (events) => {
     //checks out

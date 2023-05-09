@@ -32,7 +32,7 @@ const newUser = () => {
     nickname: nickname,
     password: password,
     accessToken: null,
-    eventIds: [],
+    eventsIds: [],
   };
 
   const [postUser, { data, error, isLoading }] = usePostUserMutation();
@@ -49,22 +49,11 @@ const newUser = () => {
     }
   };
 
-  const test = (error) => {
-    console.log(error);
-  };
-
   if (data?.data) {
     console.log("ATLAS ---- User Created ----");
     dispatch(saveUserData(data.data));
     router.push("/dash/home");
   }
-  useEffect(() => {
-    console.log("USE EFFECT");
-    if (!data?.data && error) {
-      console.log(error);
-      // test(error);
-    }
-  }, [error]);
 
   const doesUsernameExist = () => {
     // Check if username exists, style text box if true, avoid .length = 0
