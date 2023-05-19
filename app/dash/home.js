@@ -64,10 +64,35 @@ const CalendarScreen = () => {
       uid: 4823,
       user: "John Doe",
     },
+    {
+      _id: "64407954e3deef7b1d1a1380",
+      dateTime: "2023-06-15T18:30:00.000Z",
+      description: "DDDDDAJSNBFLAKJSBFL",
+      id: 3,
+      title: "Intro to Yoga",
+      uid: 4823,
+      user: "John Doe",
+    },
   ];
 
-  const groupEventsByDate2 = () => {};
-  const eventsByDate = { "01": [], "02": [] };
+  const eventsByDate = {};
+  const groupEventsByDate2 = () => {
+    dataEVENTEXAMPLE.forEach((event) => {
+      const formattedEventDate = moment(event.dateTime).format("YYYYMM");
+      console.log(formattedEventDate);
+      if (eventsByDate.hasOwnProperty(formattedEventDate)) {
+        eventsByDate[formattedEventDate].push(event);
+      } else {
+        eventsByDate[formattedEventDate] = [event];
+      }
+    });
+    console.log(
+      "\n ----- \n \n EVENTS BY DATE \n \n",
+      eventsByDate,
+      "\n \n ----- \n"
+    );
+  };
+  groupEventsByDate2();
 
   const events = useSelector(eventsData);
 
