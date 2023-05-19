@@ -24,7 +24,7 @@ export default login = () => {
   const [loginUser, { data, error, isLoading }] = useLoginUserMutation();
 
   if (isLoading) {
-    console.log("LOADINGGGGG");
+    console.log("LOADING USER DATA FROM DB --- IN LOGIN");
   } else if (data?.data) {
     dispatch(saveUserData(data.data));
     router.push("./dash/home");

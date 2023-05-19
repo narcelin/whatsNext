@@ -1,7 +1,8 @@
 import React, { useEffect } from "react";
 import { View, Text, StyleSheet, Pressable, ScrollView } from "react-native";
 import { useRouter, Redirect } from "expo-router";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { importedEvents } from "./../../redux/features/eventsSlice";
 import { eventsData } from "../../redux/features/eventsSlice";
 import { usersEventsIds } from "../../redux/features/userSlice";
 import { userData } from "../../redux/features/userSlice";
@@ -12,17 +13,27 @@ import moment from "moment";
 
 const CalendarScreen = () => {
   const router = useRouter();
+  const dispatch = useDispatch();
   const eventsIds = useSelector(usersEventsIds);
+  console.log(eventsIds);
 
   const [getEvents, { data, error, isLoading }] = useGetEventsMutation();
   useEffect(() => {
     getEvents(eventsIds);
   }, []);
 
-  console.log(data?.data, "----- Return Data from Events Ids");
+  if (data?.data) {
+    console.log("HOME.JS --- Events from API Request: \n", data?.data);
+    const eventObject = {};
+    data?.data.forEach((event) => {
+      const eventObject = { [event._id]: event };
+      // console.log( "HOME.JS /n", eventObject);
+    });
+  }
+
   // console.log(useSelector(eventsData));
 
-  [
+  const dataEVENTEXAMPLE = [
     {
       _id: "64407954e3deef7b1d1a137e",
       dateTime: "2023-04-13T10:00:00.000Z",
@@ -54,6 +65,9 @@ const CalendarScreen = () => {
       user: "John Doe",
     },
   ];
+
+  const groupEventsByDate2 = () => {};
+  const eventsByDate = { "01": [], "02": [] };
 
   const events = useSelector(eventsData);
 

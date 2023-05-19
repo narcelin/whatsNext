@@ -5,7 +5,7 @@ import { Platform } from "react-native";
 import * as Crypto from "expo-crypto";
 
 import { useDispatch, useSelector } from "react-redux";
-import { saveUserData } from "../redux/features/userSlice";
+import { saveUserData } from "./../redux/features/userSlice";
 import { usePostUserMutation } from "./../redux/features/apiSlice";
 
 import { View, Text, StyleSheet, Button, TextInput, Alert } from "react-native";

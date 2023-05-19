@@ -184,6 +184,9 @@ export const eventsSlice = createSlice({
   name: "events",
   initialState,
   reducers: {
+    importedEvents: (state, action) => {
+      console.log("----- REDUX importedEvents RAN ----- \n", action.payload);
+    },
     addEvent: (state, action) => {
       console.log("addEvent Ran");
 
