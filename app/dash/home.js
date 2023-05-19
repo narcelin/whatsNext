@@ -15,82 +15,22 @@ const CalendarScreen = () => {
   const router = useRouter();
   const dispatch = useDispatch();
   const eventsIds = useSelector(usersEventsIds);
-  console.log(eventsIds);
 
   const [getEvents, { data, error, isLoading }] = useGetEventsMutation();
   useEffect(() => {
     getEvents(eventsIds);
   }, []);
 
-  if (data?.data) {
-    console.log("HOME.JS --- Events from API Request: \n", data?.data);
-    const eventObject = {};
-    data?.data.forEach((event) => {
-      const eventObject = { [event._id]: event };
-      // console.log( "HOME.JS /n", eventObject);
-    });
-  }
-
-  // console.log(useSelector(eventsData));
-
-  const dataEVENTEXAMPLE = [
-    {
-      _id: "64407954e3deef7b1d1a137e",
-      dateTime: "2023-04-13T10:00:00.000Z",
-      description:
-        "Test your strength against one of nature's most fearsome predators! Disclaimer: we are not responsible for any injuries sustained during this event.",
-      id: 1,
-      title: "Wrestle a Bear",
-      uid: 1445,
-      user: "StateFarm Jake",
-    },
-    {
-      _id: "64407954e3deef7b1d1a137f",
-      dateTime: "2023-05-01T08:00:00.000Z",
-      description:
-        "Join me for a once-in-a-lifetime adventure as we hike the Grand Canyon from rim to rim!",
-      id: 2,
-      title: "Hiking the Grand Canyon",
-      uid: 2568,
-      user: "Jenny Smith",
-    },
-    {
-      _id: "64407954e3deef7b1d1a1380",
-      dateTime: "2023-06-15T18:30:00.000Z",
-      description:
-        "Learn the basics of yoga and improve your flexibility, strength, and overall well-being!",
-      id: 3,
-      title: "Intro to Yoga",
-      uid: 4823,
-      user: "John Doe",
-    },
-    {
-      _id: "64407954e3deef7b1d1a1380",
-      dateTime: "2023-06-15T18:30:00.000Z",
-      description: "DDDDDAJSNBFLAKJSBFL",
-      id: 3,
-      title: "Intro to Yoga",
-      uid: 4823,
-      user: "John Doe",
-    },
-  ];
-
   const eventsByDate = {};
   const groupEventsByDate2 = () => {
-    dataEVENTEXAMPLE.forEach((event) => {
-      const formattedEventDate = moment(event.dateTime).format("YYYYMM");
-      console.log(formattedEventDate);
+    data?.data.forEach((event) => {
+      const formattedEventDate = moment(event.dateTime).format("YYYYMMDD");
       if (eventsByDate.hasOwnProperty(formattedEventDate)) {
         eventsByDate[formattedEventDate].push(event);
       } else {
         eventsByDate[formattedEventDate] = [event];
       }
     });
-    console.log(
-      "\n ----- \n \n EVENTS BY DATE \n \n",
-      eventsByDate,
-      "\n \n ----- \n"
-    );
   };
   groupEventsByDate2();
 
@@ -144,6 +84,16 @@ const CalendarScreen = () => {
     );
   };
 
+  const renderEventsDay = (date) => {
+    const formattedDate = moment(date, "YYYYMMDD").format("DD-MM-YYYY");
+
+    return (
+      <View style={styles.dateContainer} key={date}>
+        <Text style={styles.dateHeader}>{formattedDate}</Text>
+      </View>
+    );
+  };
+
   const onEventPress = (eventID) => {
     router.push({
       pathname: "./eventScreen",
@@ -153,7 +103,14 @@ const CalendarScreen = () => {
 
   return (
     <>
-      {false ? (
+      <View style={styles.container}>
+        <ScrollView style={styles.scrollView}>
+          {Object.keys(eventsByDate).map((date) => {
+            return renderEventsDay(date);
+          })}
+        </ScrollView>
+      </View>
+      {/* {false ? (
         <Redirect href="./newEvent" />
       ) : (
         <View style={styles.container}>
@@ -161,7 +118,7 @@ const CalendarScreen = () => {
             {eventGroups.map(renderEventGroup)}
           </ScrollView>
         </View>
-      )}
+      )} */}
     </>
   );
 }; //If added date does not already exist, the new added event from newEvent will not show on screen -----------
