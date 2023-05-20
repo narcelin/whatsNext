@@ -90,6 +90,28 @@ const CalendarScreen = () => {
     return (
       <View style={styles.dateContainer} key={date}>
         <Text style={styles.dateHeader}>{formattedDate}</Text>
+
+        {eventsByDate[date].map((event) => {
+          return (
+            <Pressable
+              style={styles.eventContainer}
+              key={event.id}
+              onPress={() => {
+                onEventPress(event.id);
+              }}
+            >
+              <Text style={[styles.eventText, styles.eventTitle]}>
+                {moment(event.dateTime).format("h:mm A")}
+              </Text>
+              <Text style={[styles.eventText, styles.eventTitle]}>
+                {event.title}
+              </Text>
+              <Text style={[styles.eventText, styles.eventUser]}>
+                {event.user}
+              </Text>
+            </Pressable>
+          );
+        })}
       </View>
     );
   };
