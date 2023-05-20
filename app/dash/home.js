@@ -13,7 +13,6 @@ import moment from "moment";
 
 const CalendarScreen = () => {
   const router = useRouter();
-  const dispatch = useDispatch();
   const eventsIds = useSelector(usersEventsIds);
 
   const [getEvents, { data, error, isLoading }] = useGetEventsMutation();
@@ -22,7 +21,7 @@ const CalendarScreen = () => {
   }, []);
 
   const eventsByDate = {};
-  const groupEventsByDate2 = () => {
+  const groupEventsByDate = () => {
     data?.data.forEach((event) => {
       const formattedEventDate = moment(event.dateTime).format("YYYYMMDD");
       if (eventsByDate.hasOwnProperty(formattedEventDate)) {
@@ -32,57 +31,7 @@ const CalendarScreen = () => {
       }
     });
   };
-  groupEventsByDate2();
-
-  const events = useSelector(eventsData);
-
-  const groupEventsByDate = (events) => {
-    //checks out
-    const eventGroups = {};
-    events.allIds.forEach((id) => {
-      const date = moment(events.byId[id].dateTime).format("L");
-      if (eventGroups[date]) {
-        eventGroups[date].push(events.byId[id]);
-      } else {
-        eventGroups[date] = [events.byId[id]];
-      }
-    });
-    return eventGroups;
-  };
-
-  const eventGroups = Object.entries(groupEventsByDate(events)); //checks out
-  // console.log(eventGroups);
-
-  const renderEvent = (event) => {
-    // console.log(event);
-
-    return (
-      <Pressable
-        style={styles.eventContainer}
-        key={event.id}
-        onPress={() => {
-          onEventPress(event.id);
-        }}
-      >
-        <Text style={[styles.eventText, styles.eventTitle]}>
-          {moment(event.dateTime).format("h:mm A")}
-        </Text>
-        <Text style={[styles.eventText, styles.eventTitle]}>{event.title}</Text>
-        <Text style={[styles.eventText, styles.eventUser]}>{event.user}</Text>
-      </Pressable>
-    );
-  };
-
-  const renderEventGroup = ([date, events]) => {
-    // console.log(date);
-    // console.log(events);
-    return (
-      <View style={styles.dateContainer} key={date}>
-        <Text style={styles.dateHeader}>{date}</Text>
-        {events.map(renderEvent)}
-      </View>
-    );
-  };
+  groupEventsByDate();
 
   const renderEventsDay = (date) => {
     const formattedDate = moment(date, "YYYYMMDD").format("DD-MM-YYYY");
@@ -132,15 +81,6 @@ const CalendarScreen = () => {
           })}
         </ScrollView>
       </View>
-      {/* {false ? (
-        <Redirect href="./newEvent" />
-      ) : (
-        <View style={styles.container}>
-          <ScrollView style={styles.scrollView}>
-            {eventGroups.map(renderEventGroup)}
-          </ScrollView>
-        </View>
-      )} */}
     </>
   );
 }; //If added date does not already exist, the new added event from newEvent will not show on screen -----------
