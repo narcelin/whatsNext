@@ -6,12 +6,11 @@ const initialState = {
     apple_uid: 0,
     github_uid: 0,
   },
-  accessToken: "accessToken",
-  username: "username",
-  alias: "alias",
-  password: "password",
+  accessToken: null,
+  username: "Guest",
   eventsIds: [],
-  status: "idle",
+  outfitsIds: [],
+  preferences: {},
 };
 
 export const userSlice = createSlice({

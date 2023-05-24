@@ -180,6 +180,7 @@ const initialState = {
   },
   status: "idle",
 };
+
 export const eventsSlice = createSlice({
   name: "events",
   initialState,

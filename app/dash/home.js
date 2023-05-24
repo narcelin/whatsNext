@@ -4,25 +4,54 @@ import { useRouter, Redirect } from "expo-router";
 import { useSelector, useDispatch } from "react-redux";
 import { importedEvents } from "./../../redux/features/eventsSlice";
 import { eventsData } from "../../redux/features/eventsSlice";
-import { usersEventsIds } from "../../redux/features/userSlice";
 import { userData } from "../../redux/features/userSlice";
-import { useGetAllEventsQuery } from "../../redux/features/apiSlice";
-import { useGetEventsMutation } from "../../redux/features/apiSlice";
+
+import {
+  useGetUserEventsMutation,
+  useGetAllUserOutfitsEventsIdsMutation,
+} from "../../redux/features/apiSlice";
 
 import moment from "moment";
+import { isArguments } from "lodash";
 
 const CalendarScreen = () => {
   const router = useRouter();
-  const eventsIds = useSelector(usersEventsIds);
+  const savedUserData = useSelector(userData);
 
-  const [getEvents, { data, error, isLoading }] = useGetEventsMutation();
+  const [
+    getUserEvents,
+    { data: userEvents_Data, error, isLoading: userEvents_isLoading },
+  ] = useGetUserEventsMutation();
+
+  const [
+    getAllUserOutfitsEvents,
+    {
+      data: userOutfitsEventsIds_Data,
+      error: userOutfitsEvents_error,
+      isLoading: userOutfitsEvents_isLoading,
+    },
+  ] = useGetAllUserOutfitsEventsIdsMutation();
+
   useEffect(() => {
-    getEvents(eventsIds);
+    getAllUserOutfitsEvents(savedUserData.outfitsIds);
   }, []);
 
-  const eventsByDate = {};
+  useEffect(() => {
+    if (userOutfitsEventsIds_Data) {
+      const allUserEventsIds = [
+        ...new Set([
+          ...userOutfitsEventsIds_Data?.data,
+          ...savedUserData.eventsIds,
+        ]),
+      ];
+      getUserEvents(allUserEventsIds);
+    }
+  }, [userOutfitsEventsIds_Data]);
+
+  const eventsByDate = {}; //Store in redux so that I amy access and edit in different screens. Or just the array? not sure how to do this so that I am not making repeated calls to server. If there is no change i prefer no call to server
   const groupEventsByDate = () => {
-    data?.data.forEach((event) => {
+    //Maybe change this so it only needs the array of ids for events in order to make it buildable
+    userEvents_Data?.data.forEach((event) => {
       const formattedEventDate = moment(event.dateTime).format("YYYYMMDD");
       if (eventsByDate.hasOwnProperty(formattedEventDate)) {
         eventsByDate[formattedEventDate].push(event);
@@ -31,6 +60,7 @@ const CalendarScreen = () => {
       }
     });
   };
+
   groupEventsByDate();
 
   const renderEventsDay = (date) => {

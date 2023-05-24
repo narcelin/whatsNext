@@ -21,7 +21,14 @@ export const apiSlice = createApi({
     getAllEvents: builder.query({
       query: () => "events",
     }),
-    getEvents: builder.mutation({
+    getAllUserOutfitsEventsIds: builder.mutation({
+      query: (outfitsIds) => ({
+        url: "outfits",
+        method: "POST",
+        body: outfitsIds,
+      }),
+    }),
+    getUserEvents: builder.mutation({
       query: (eventsId) => ({
         url: "events",
         method: "POST",
@@ -33,6 +40,8 @@ export const apiSlice = createApi({
         `events/${id}`;
       },
     }),
+
+    //Outfits
 
     //Users
     postUser: builder.mutation({
@@ -53,10 +62,10 @@ export const apiSlice = createApi({
       }),
     }),
     loginUser: builder.mutation({
-      query: (username) => ({
+      query: (userLogin) => ({
         url: "users/login",
         method: "POST",
-        body: username,
+        body: userLogin,
       }),
     }),
   }),
@@ -67,7 +76,8 @@ export const {
   useGetProductsQuery,
 
   useGetAllEventsQuery,
-  useGetEventsMutation,
+  useGetAllUserOutfitsEventsIdsMutation,
+  useGetUserEventsMutation,
   useGetEventQuery,
 
   usePostUserMutation,
