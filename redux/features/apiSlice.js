@@ -21,7 +21,7 @@ export const apiSlice = createApi({
     getAllEvents: builder.query({
       query: () => "events",
     }),
-    getAllUserOutfitsEventsIds: builder.mutation({
+    getUserOutfitsEventsIds: builder.mutation({
       query: (outfitsIds) => ({
         url: "outfits",
         method: "POST",
@@ -76,7 +76,7 @@ export const {
   useGetProductsQuery,
 
   useGetAllEventsQuery,
-  useGetAllUserOutfitsEventsIdsMutation,
+  useGetUserOutfitsEventsIdsMutation,
   useGetUserEventsMutation,
   useGetEventQuery,
 

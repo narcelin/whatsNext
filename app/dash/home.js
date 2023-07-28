@@ -1,40 +1,43 @@
 import React, { useEffect } from "react";
 import { View, Text, StyleSheet, Pressable, ScrollView } from "react-native";
 import { useRouter, Redirect } from "expo-router";
+import moment from "moment";
+
 import { useSelector, useDispatch } from "react-redux";
-import { importedEvents } from "./../../redux/features/eventsSlice";
-import { eventsData } from "../../redux/features/eventsSlice";
+import {
+  saveEventsIds,
+  saveEventsData,
+} from "../../redux/features/eventsSlice";
+
 import { userData } from "../../redux/features/userSlice";
 
 import {
   useGetUserEventsMutation,
-  useGetAllUserOutfitsEventsIdsMutation,
+  useGetUserOutfitsEventsIdsMutation,
 } from "../../redux/features/apiSlice";
-
-import moment from "moment";
-import { isArguments } from "lodash";
 
 const CalendarScreen = () => {
   const router = useRouter();
+  const dispatch = useDispatch();
   const savedUserData = useSelector(userData);
 
   const [
-    getUserEvents,
-    { data: userEvents_Data, error, isLoading: userEvents_isLoading },
-  ] = useGetUserEventsMutation();
-
-  const [
-    getAllUserOutfitsEvents,
+    getUserOutfitsEventsIds,
     {
       data: userOutfitsEventsIds_Data,
       error: userOutfitsEvents_error,
       isLoading: userOutfitsEvents_isLoading,
     },
-  ] = useGetAllUserOutfitsEventsIdsMutation();
+  ] = useGetUserOutfitsEventsIdsMutation();
 
   useEffect(() => {
-    getAllUserOutfitsEvents(savedUserData.outfitsIds);
+    getUserOutfitsEventsIds(savedUserData.outfitsIds);
   }, []);
+
+  const [
+    getUserEvents,
+    { data: userEvents_Data, error, isLoading: userEvents_isLoading },
+  ] = useGetUserEventsMutation();
 
   useEffect(() => {
     if (userOutfitsEventsIds_Data) {
@@ -44,9 +47,25 @@ const CalendarScreen = () => {
           ...savedUserData.eventsIds,
         ]),
       ];
+      dispatch(saveEventsIds(allUserEventsIds));
       getUserEvents(allUserEventsIds);
     }
   }, [userOutfitsEventsIds_Data]);
+
+  useEffect(() => {
+    if (userEvents_Data) {
+      const convertArrayToObject = (array, keyProperty) => {
+        return array.reduce((obj, item) => {
+          obj[item[keyProperty]] = item;
+          return obj;
+        }, {});
+      };
+
+      dispatch(
+        saveEventsData(convertArrayToObject(userEvents_Data.data, "_id"))
+      );
+    }
+  }, [userEvents_Data]);
 
   const eventsByDate = {}; //Store in redux so that I amy access and edit in different screens. Or just the array? not sure how to do this so that I am not making repeated calls to server. If there is no change i prefer no call to server
   const groupEventsByDate = () => {
@@ -74,9 +93,9 @@ const CalendarScreen = () => {
           return (
             <Pressable
               style={styles.eventContainer}
-              key={event.id}
+              key={event._id}
               onPress={() => {
-                onEventPress(event.id);
+                onEventPress(event._id);
               }}
             >
               <Text style={[styles.eventText, styles.eventTitle]}>
@@ -113,7 +132,7 @@ const CalendarScreen = () => {
       </View>
     </>
   );
-}; //If added date does not already exist, the new added event from newEvent will not show on screen -----------
+};
 
 const styles = StyleSheet.create({
   container: {

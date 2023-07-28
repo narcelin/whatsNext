@@ -32,6 +32,10 @@ const newEvent = () => {
 
   const onSubmit = () => {
     if (title && description) {
+
+
+
+      
       dispatch(addEvent(object));
     } else {
       Alert.alert("Missing Info");
@@ -75,7 +79,7 @@ const newEvent = () => {
         value={description}
       />
       <Button
-        title="Press me"
+        title="Add Event"
         color="#007aff"
         onPress={onSubmit}
         style={styles.button}
